@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>TODO</title>
+	<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+
+<body id="main" onclick="nascondiMenu()">
+    
+    <!-- finestra menu per modificare -->
+    <div id="modifica" class="modifica">
+        <ul>
+            <li onclick="rinominaProgetto()" class="rinomina opzione">Rinomina</li>
+            <li onclick="eliminaProgetto()" class="elimina">Elimina</li>
+        </ul>
+    </div>
+	
+    <div class="header">
+
+		<div id="menu" class="menu" onclick="openNav()">
+			<div class="barra"></div>
+			<div class="barra"></div>
+			<div class="barra"></div>
+		</div>
+
+		<div id="mySidenav" class="sidenav">
+
+		</div>
+
+	</div>
+
+	<div class="compiti">
+
+		<div class="input">
+
+			<svg id="Layer_1" class="tick" viewBox="0 0 915.8 915.8">
+				<circle class="cls-1" cx="457.9" cy="457.9" r="434.4" />
+			</svg>
+			<input type="text" id="input" required onkeydown="creaCompito(event)" placeholder="Compito" name="compito">
+            <input type="date" name="scadenza" onkeydown="creaCompito(event)" id="scadenza">
+        
+        </div>
+        
+        <div class="elenco" id="elenco"></div>
+
+    </div>
+
+    <script src="{{url_for('static', filename='main.js')}}"></script>
+
+</body>
+
+</html>
