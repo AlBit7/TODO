@@ -11,9 +11,11 @@ function closeNav() {
 }
 
 var IdProgettoSelezionato = 0;
-const menu = document.getElementById("mySidenav");
+var luce = true;
+const menu = document.getElementById("elencoProgetti");
 const fMenu = document.getElementById("modifica");
 const elencoCompiti = document.getElementById("elenco");
+const rinomina = document.getElementById("scegliNome");
 
 caricaProgetti();
 
@@ -26,14 +28,7 @@ function caricaProgetti() {
     .then( response => {
 
         console.log(response)
-        menu.innerHTML = `
-                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-			
-                <div class="nuovoProgetto">
-                    <span style="color: black;">Progetto</span>
-                    <span class="iconaNuovoProgetto" onclick="creaNuovoProgetto()" aria-label="nuovo progetto">+</span>
-                </div>
-            `;
+        menu.innerHTML = ``;
 
         // carica tutti i progetti
         for (const key in response) {
@@ -47,6 +42,7 @@ function caricaProgetti() {
         }
     
         // carica i compiti del progetto TODO
+        elencoCompiti.innerHTML = "";
         const progettoTODO = response[IdProgettoSelezionato]["compiti"]
         console.log("compiti di " + IdProgettoSelezionato + ": " + progettoTODO)
         
@@ -64,7 +60,7 @@ function caricaProgetti() {
                 `
 
                 if (progettoTODO[compito]["Completato"]) {
-                    document.getElementById("c" + compito).style = "fill: #5454ff; stroke: #5454ff";
+                    document.getElementById("c" + compito).style = "fill: var(--colore-tick); stroke: var(--colore-tick)";
                     document.getElementById(compito).style = "text-decoration: line-through;";
                 }
                 
@@ -72,11 +68,9 @@ function caricaProgetti() {
         }
 
         // segno TODO come selezionato
-        document.getElementById(IdProgettoSelezionato).style = "color:white;background-color:black;";
+        document.getElementById(IdProgettoSelezionato).style = "color:var(--colore-selezione-testo);background-color:var(--colore-selezione);";;
 
     } );
-
-    
 
 }
 
@@ -108,10 +102,6 @@ function creaNuovoProgetto() {
 
 }
 
-function eliminaProgetto() {
-
-}
-
 function selezionato(event) {
 
     console.log(event);
@@ -119,20 +109,21 @@ function selezionato(event) {
 
     if (event.target.id != IdProgettoSelezionato && event.target.localName == "div") {
         document.getElementById(IdProgettoSelezionato).style = "";
-        event.target.style = "color:white;background-color:black;";
+        event.target.style = "color:var(--colore-selezione-testo);background-color:var(--colore-selezione);";
         IdProgettoSelezionato = event.target.id;
 
-        document.getElementById("elenco").innerHTML = "";
-
         // carica tutti i compiti del progetto
+        elencoCompiti.innerHTML = "";
         fetch( `https://todoapp.albit7.repl.co/api/compiti/${IdProgettoSelezionato}` )
             .then( response => response.json() )
             .then( response => {
+
                 console.log("compiti di " + IdProgettoSelezionato + ": " + response)
+
                 for (const compito in response) {
                     if (response.hasOwnProperty(compito)) {
 
-                        document.getElementById("elenco").innerHTML += `
+                        elencoCompiti.innerHTML += `
                             <div class="compito">
                                 <svg id="t${compito}" name="${compito}" onmousedown="completaCompito(event)" style="cursor: pointer;" class="tick" viewBox="0 0 915.8 915.8">
                                     <circle id="c${compito}" class="cls-1" cx="457.9" cy="457.9" r="434.4" />
@@ -143,7 +134,7 @@ function selezionato(event) {
                         `
 
                         if (response[compito]["Completato"]) {
-                            document.getElementById("c" + compito).style = "fill: #5454ff; stroke: #5454ff";
+                            document.getElementById("c" + compito).style = "fill: var(--colore-tick); stroke: var(--colore-tick)";
                             document.getElementById(compito).style = "text-decoration: line-through;";
                         }
                         
@@ -168,7 +159,9 @@ function completaCompito(event) {
     } else {
         completato = 1;
         testo.style = "text-decoration: line-through;"; // modifico stato della pagina
-        pallino.style = "fill: #5454ff; stroke: #5454ff";
+        pallino.style = "fill: var(--colore-tick); stroke: var(--colore-tick)";
+        var ding = new Audio('https://notificationsounds.com/storage/sounds/file-sounds-1150-pristine.mp3');
+        ding.play();
     }
 
     // aggiorno il compito con put
@@ -191,9 +184,11 @@ function creaCompito(event) {
 
     if (event.key === "Enter") {
 
+        // prendo input
         let testo = document.getElementById("input").value;
         let scadenza = document.getElementById("scadenza").value;
 
+        // resetto valori
         document.getElementById("input").value = document.getElementById("scadenza").value = "";
 
         console.log(testo);
@@ -203,11 +198,13 @@ function creaCompito(event) {
 
             // posta il risultato a server
             const d = new Date();
+
+            // se la data non viene specificata mettere la data di oggi
             if (scadenza == "") {
                 scadenza = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
             }
+            
             let dataScadenza = scadenza.split("-");
-            console.log(dataScadenza);
 
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -221,9 +218,9 @@ function creaCompito(event) {
                     "Anno": d.getFullYear()
                 },
                 "Scadenza": {
-                    "Giorno": dataScadenza[2],
-                    "Mese": dataScadenza[1],
-                    "Anno": dataScadenza[0]
+                    "Giorno": parseInt(dataScadenza[2]),
+                    "Mese": parseInt(dataScadenza[1]),
+                    "Anno": parseInt(dataScadenza[0])
                 }
             });
 
@@ -260,10 +257,7 @@ function creaCompito(event) {
 
 function finestraMenu(event) {
 
-    console.log(event)
-
-    // event.target.style.backgroundColor = "hsl(0, 0%, 90%);";
-
+    // mostra la finestra del menù alle coordinate del mouse
     fMenu.style.display = "block";
     fMenu.style.left = event.pageX + "px";
     fMenu.style.top = event.pageY + "px";
@@ -272,15 +266,29 @@ function finestraMenu(event) {
 
 function nascondiMenu(event) {
 
+    // nascondi la finestra del menù
     fMenu.style.display = "none";
 
 }
 
-function rinominaProgetto() {
+function mostraRinomina() {
 
-    let nuovoNome = "pablo";
+    // mostra la finsetra del rinomina
+    rinomina.style.display = "flex";
+    //document.getElementById("main").style.backgroundColor = "red";//'rgba(128, 128, 128, 0.5)';
 
-    var requestOptions = {
+}
+
+function rinominaProgetto(event) {
+
+    if (event.key != "Enter")
+        return;
+    
+    rinomina.style.display = "none";
+    let nuovoNome = event.target.value;
+    event.target.value = "";
+
+    let requestOptions = {
         method: 'PUT',
         redirect: 'follow'
     };
@@ -290,14 +298,14 @@ function rinominaProgetto() {
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
 
-    syncDelay(250); // il server ha bisogno almeno di 1/4 di secondo
+    syncDelay(250); // il server ha bisogno almeno di 1/4 di secondo per eliminare il progetto
     caricaProgetti();
 
 }
 
 function eliminaProgetto() {
 
-    var requestOptions = {
+    let requestOptions = {
         method: 'DELETE',
         redirect: 'follow'
     };
@@ -318,4 +326,35 @@ function syncDelay(milliseconds){
     while( (end-start) < milliseconds){
         end = new Date().getTime();
     }
+}
+
+function cambiaColore() {
+
+    let r = document.querySelector(':root');
+    let bottoneColore = document.getElementById("cambiaColore");
+
+    if (luce) {
+        luce = false;
+        r.style.setProperty('--colore-body', '#030202');
+        r.style.setProperty('--colore-header', '#212121');
+        r.style.setProperty('--colore-bottoni', 'white');
+        r.style.setProperty('--colore-testo', 'white');
+        r.style.setProperty('--colore-hover', '#4a4a4a');
+        r.style.setProperty('--colore-selezione', 'white');
+        r.style.setProperty('--colore-selezione-testo', 'black');
+        r.style.setProperty('--colore-tick', 'red');
+        bottoneColore.innerHTML = "☀";
+    } else {
+        luce = true;
+        r.style.setProperty('--colore-body', 'white');
+        r.style.setProperty('--colore-header', 'white');
+        r.style.setProperty('--colore-bottoni', 'hsl(213, 5%, 39%)');
+        r.style.setProperty('--colore-testo', 'black');
+        r.style.setProperty('--colore-hover', '#f0f0f0');
+        r.style.setProperty('--colore-selezione', 'black');
+        r.style.setProperty('--colore-selezione-testo', 'white');
+        r.style.setProperty('--colore-tick', '#5454ff');
+        bottoneColore.innerHTML = "☽";
+    }
+
 }
