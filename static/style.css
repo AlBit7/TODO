@@ -1,7 +1,22 @@
-root {
+:root {
 	--colore-body: white;
 	--colore-header: white;
 	--colore-bottoni: hsl(213, 5%, 39%);
+    --colore-testo: black; 
+    --colore-hover: #f0f0f0; 
+    --colore-selezione: black;
+    --colore-selezione-testo: white;
+    --colore-tick: #5454ff;
+    /* Per il tema scuro:
+    --colore-body: #1f232d;
+	--colore-header: #010204;
+	--colore-bottoni: white;
+    --colore-testo: white;
+    --colore-hover: #4a4a4a;
+    --colore-selezione: white;
+    --colore-selezione-testo: black;
+    --colore-tick: red;
+    */
 }
 
 body {
@@ -10,13 +25,36 @@ body {
 	font-family: Arial;
 }
 
+p, span {
+    color: var(--colore-testo);
+}
+
 .header {
 	position: fixed;
 	display: flex;
+    justify-content: space-between;
+    align-items: center;
 	width: 100%;
 	height: 50px;
 	background-color: var(--colore-header);
-	border-bottom: 0.0625rem solid #e0e0e0;
+	border-bottom: 0.0625rem solid var(--colore-hover);
+}
+
+.cambiaColore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    cursor: pointer;
+    color: var(--colore-testo);
+    margin-right: 5%;
+}
+
+.cambiaColore:hover {
+    transition: .5s;
+    background-color: var(--colore-hover);
 }
 
 /* SEZIONE COMPITI */
@@ -37,11 +75,11 @@ body {
 	height: 40px;
 	background-color: var(--colore-header);
 	border-radius: 25vh;
-	border: 0.1rem solid #e0e0e0;
+	border: 0.1rem solid var(--colore-hover);
 }
 
 input[type="text"] {
-	color: black;
+	color: var(--colore-testo);
 	background-color: var(--colore-header);
 	cursor: text;
 	width: 100%;
@@ -61,44 +99,83 @@ input[type="text"]:hover {
 	margin-left: 2%;
 }
 
-.cls-1 {
+.cerchio {
 	fill: none;
-	stroke: #e0e0e0;
+	stroke: var(--colore-hover);
 	stroke-miterlimit: 10;
 	stroke-width: 70px;
 }
 
 /* DATA */
 
-/* Removes the clear button from date inputs */
-input[type="date"]::-webkit-clear-button {
-	display: none;
+.datepicker-toggle {
+  display: inline-block;
+  position: relative;
+  width: 25px;
+  height: 25px;
+  margin-right: 2%;
 }
 
-/* Removes the spin button */
-input[type="date"]::-webkit-inner-spin-button {
-	display: none;
+.datepicker-toggle-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 2px;
+  width: 100%;
+  height: 100%;
 }
 
-/* Always display the drop down caret */
-input[type="date"]::-webkit-calendar-picker-indicator {
-	color: white;
+.datepicker-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
-/* A few custom styles for date inputs */
-input[type="date"] {
-	width: 20%;
-	margin-right: 2%;
-	color: white;
-	font-family: "Helvetica", arial, sans-serif;
-	font-size: 18px;
-	border: 0px;
-	padding: 0px;
-	background: var(--colore-header);
+.datepicker-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
 }
 
 :focus-visible {
 	outline-width: 0px;
+}
+
+.cls-1 {
+    fill: none;
+}
+
+.cls-1, .cls-2, .cls-3, .cls-4 {
+    stroke: var(--colore-testo);
+    stroke-width: 25px;
+}
+
+.cls-1, .cls-2, .cls-3 {
+    stroke-miterlimit: 10;
+}
+
+.cls-2, .cls-3, .cls-4 {
+    fill: none;
+}
+
+.cls-3, .cls-4 {
+    stroke-linecap: round;
+}
+
+.cls-4 {
+    stroke-linejoin: round;
 }
 
 /* ELENCO DEI COMPITI */
@@ -110,7 +187,7 @@ input[type="date"] {
 
 .compito {
 	height: 40px;
-	border-top: 0.1rem solid #e0e0e0;
+	border-top: 0.1rem solid var(--colore-hover);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -132,73 +209,81 @@ input[type="date"] {
 
 .menu {
 	margin-left: 5%;
-	margin-top: 10px;
-	height: 30px;
+    border-radius: 100%;
+	padding: 5px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-evenly;
 	cursor: pointer;
 }
 
-.barra {
-	height: 4px;
-	width: 30px;
-	background-color: hsl(213, 5%, 39%);
-	border-radius: 2.5px;
+.menu:hover {
+    transition: .5s;
+    background-color: var(--colore-hover);
+}
+
+.menu path {
+    fill: var(--colore-bottoni);
 }
 
 .sidenav {
+    border-right: 0.0625rem solid var(--colore-hover);
 	height: 100%;
-	width: 0;
 	position: fixed;
+    width: 0;
 	z-index: 1;
 	top: 0;
 	left: 0;
-	background-color: hsl(0, 0%, 97%);
+	background-color: var(--colore-header);
 	overflow-x: hidden;
 	transition: 0.5s;
-	padding-top: 60px;
 }
 
 .elemento {
 	padding: 4px 4px 4px 8px;
 	font-size: 18px;
-	color: hsl(213, 5%, 39%);
+	color: var(--colore-bottoni);
 	transition: 0.3s;
 	display: flex;
 	flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
 }
 
 .elemento:hover {
-	color: black;
-	background-color: hsl(0, 0%, 90%);
-	cursor: pointer;
+	color: var(--colore-testo);
+	background-color: var(--colore-hover);
 }
 
 .sidenav span {
 	padding: 4px 4px 4px 4px;
 	margin-left: 4px;
-	font-size: 18px;
-	display: block;
 	transition: 0.3s;
 }
 
 .closebtn {
-	text-decoration: none;
-	color: hsl(213, 5%, 39%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px;
+    cursor: pointer;
+    margin-top: 10px;
+    height: 30px;
+    width: 30px;
+    border-radius: 100%;
+	color: var(--colore-bottoni);
 }
 
 .closebtn:hover {
-	color: black;
+    transition: .5s;
+    background-color: var(--colore-hover);
 }
 
 .sidenav .closebtn {
 	position: absolute;
 	top: 0;
 	right: 25px;
-	font-size: 36px;
 	margin-left: 50px;
 }
 
@@ -211,23 +296,35 @@ input[type="date"] {
 	}
 }
 
+.scrittaProgetto {
+    color: var(--colore-bottoni);
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
 .nuovoProgetto {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 10px;
+    margin-top: 60px;
 }
 
 .iconaNuovoProgetto {
-	text-align: center;
-	width: 18px;
+    color: var(--colore-bottoni);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3em;
+	width: 1.3em;
+    height: 1.3em;
 	margin-right: 15px;
 	border-radius: 100%;
+    cursor: pointer;
 }
 
 .iconaNuovoProgetto:hover {
-	color: black;
-	cursor: pointer;
-	background-color: hsl(0, 0%, 90%);
+    transition: .5s;
+	background-color: var(--colore-hover);
 }
 
 #main {
@@ -241,8 +338,8 @@ input[type="date"] {
     z-index: 500 !important;
     display: none;
     text-align: left;
-    background: hsl(0, 0%, 97%);
-    border: 0.5px solid darkgray;
+    background: var(--colore-header);
+    border: 0.0625rem solid var(--colore-hover);
 }
 
 .modifica ul {
@@ -264,8 +361,12 @@ input[type="date"] {
 }
 
 .opzione:hover {
-    background: hsl(0, 0%, 90%);
+    background: var(--colore-hover);
     cursor: pointer;
+}
+
+.rinomina {
+    color: var(--colore-testo);
 }
 
 .elimina {
@@ -273,7 +374,24 @@ input[type="date"] {
 }
 
 .elimina:hover {
-    color: white;
+    color: var(--colore-header);
     background-color: red;
     cursor: pointer;
+}
+
+/* CASELLA PER SCEGLIERE IL NOME */
+
+.scegliNome {
+    z-index: 1000 !important;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding-left: 12px;
+    display: flex;
+	width: 30%;
+	height: 40px;
+	background-color: var(--colore-header);
+	border-radius: 25vh;
+	border: 0.1rem solid var(--colore-hover);
 }
