@@ -6,42 +6,79 @@
 	<link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 </head>
 
-<body id="main" onclick="nascondiMenu()">
-    
-    <!-- finestra menu per modificare -->
-    <div id="modifica" class="modifica">
-        <ul>
-            <li onclick="rinominaProgetto()" class="rinomina opzione">Rinomina</li>
-            <li onclick="eliminaProgetto()" class="elimina">Elimina</li>
-        </ul>
+<body id="main" onclick="nascondiMenu();">
+
+	<!-- finestra menu per modificare -->
+	<div id="modifica" class="modifica">
+		<ul>
+			<li onclick="mostraRinomina()" class="rinomina opzione">Rinomina</li>
+			<li onclick="eliminaProgetto()" class="elimina">Elimina</li>
+		</ul>
+	</div>
+
+	<div id="scegliNome" class="scegliNome" style="display: none;">
+		<input type="text" id="nuovoNome" required onkeydown="rinominaProgetto(event)" placeholder="Nome progetto">
     </div>
 	
+    <!-- header -->
     <div class="header">
-
+ 
 		<div id="menu" class="menu" onclick="openNav()">
-			<div class="barra"></div>
-			<div class="barra"></div>
-			<div class="barra"></div>
+            <svg width="24" height="24" viewBox="0 0 24 24" focusable="false"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
 		</div>
 
 		<div id="mySidenav" class="sidenav">
+            
+            <div class="closebtn" onclick="closeNav()">&times;</div>
+			
+            <div class="nuovoProgetto">
+                <span class="scrittaProgetto">Progetto</span>
+                <span class="iconaNuovoProgetto" onclick="creaNuovoProgetto()" aria-label="nuovo progetto">+</span>
+            </div>
+
+            <div id="elencoProgetti"></div>
 
 		</div>
 
+        <div id="cambiaColore" focusable="false" class="cambiaColore" onclick="cambiaColore()">☽</div>
+
 	</div>
 
+    <!-- elenco dei compiti -->
 	<div class="compiti">
 
+        <!-- input per testo e data compiti -->
 		<div class="input">
 
 			<svg id="Layer_1" class="tick" viewBox="0 0 915.8 915.8">
-				<circle class="cls-1" cx="457.9" cy="457.9" r="434.4" />
+				<circle class="cerchio" cx="457.9" cy="457.9" r="434.4" />
 			</svg>
-			<input type="text" id="input" required onkeydown="creaCompito(event)" placeholder="Compito" name="compito">
-            <input type="date" name="scadenza" onkeydown="creaCompito(event)" id="scadenza">
+			
+            <input type="text" id="input" required onkeydown="creaCompito(event)" placeholder="Compito" name="compito">
+            
+            <span class="datepicker-toggle">
+                <span class="datepicker-toggle-button">
+                    <svg id="iconaData" viewBox="0 0 831.9 757.8">
+                    <rect class="cls-1" x="12.5" y="99" width="806.9" height="646.24" rx="106.7"/>
+                    <line class="cls-2" x1="12.5" y1="274.8" x2="819.4" y2="274.8"/>
+                    <path class="cls-2" d="M500,263.4" transform="translate(-84 -77.9)"/>
+                    <path class="cls-3" d="M621.5,263.4c-41.8,0-75.6-38.7-75.6-86.5s33.8-86.5,75.6-86.5,75.6,38.7,75.6,86.5" transform="translate(-84 -77.9)"/>
+                    <path class="cls-3" d="M378.5,263.4c-41.7,0-75.6-38.7-75.6-86.5s33.9-86.5,75.6-86.5,75.6,38.7,75.6,86.5" transform="translate(-84 -77.9)"/>
+                    <rect class="cls-4" x="513.2" y="524.9" width="91.8" height="91.77" rx="26.7"/>
+                    <rect class="cls-4" x="513.2" y="381.8" width="91.8" height="91.77" rx="26.7"/>
+                    <rect class="cls-4" x="370.1" y="524.9" width="91.8" height="91.77" rx="26.7"/>
+                    <rect class="cls-4" x="370.1" y="381.8" width="91.8" height="91.77" rx="26.7"/>
+                    <rect class="cls-4" x="226.9" y="524.9" width="91.8" height="91.77" rx="26.7"/>
+                    <rect class="cls-4" x="311" y="459.6" width="91.8" height="91.77" rx="26.7" transform="translate(-232.7 784.5) rotate(-90)"/>
+                    </svg>
+                </span>
+                <input type="date" class="datepicker-input" name="scadenza" onkeydown="creaCompito(event)" id="scadenza">
+            </span>
+            <!-- <input type="date" name="scadenza" onkeydown="creaCompito(event)" id="scadenza"> -->
         
         </div>
         
+        <!-- elenco compiti -->
         <div class="elenco" id="elenco"></div>
 
     </div>
